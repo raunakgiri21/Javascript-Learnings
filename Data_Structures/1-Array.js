@@ -9,6 +9,7 @@ arr.push(4); //insert element at the end - O(1)
 arr.unshift(0); //insert element at the beginning - O(n)
 arr.pop(); //remove element at the end - O(1)
 arr.shift(); //remove element at the beginning - O(n)
+console.log(arr.includes(2)); // O(n)
 
 for (const item of arr) {
   console.log(item);
