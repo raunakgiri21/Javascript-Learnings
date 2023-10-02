@@ -4,6 +4,8 @@ LINKED-LIST DATA STRUCTURE
 ----------------------------------------------------------------
 */
 
+// the commented out codes are not this.tail compatible
+
 class Node {
   constructor(value) {
     this.value = value;
@@ -14,6 +16,7 @@ class Node {
 class LinkedList {
   constructor() {
     this.head = null;
+    this.tail = null;
     this.size = 0;
   }
 
@@ -29,6 +32,7 @@ class LinkedList {
     const node = new Node(value);
     if (this.isEmpty()) {
       this.head = node;
+      this.tail = node;
     } else {
       node.next = this.head;
       this.head = node;
@@ -40,76 +44,137 @@ class LinkedList {
     const node = new Node(value);
     if (this.isEmpty()) {
       this.head = node;
+      this.tail = node;
     } else {
-      let curr = this.head;
-      while (curr.next) {
-        curr = curr.next;
-      }
-      curr.next = node;
+      this.tail.next = node;
+      this.tail = node;
     }
     this.size++;
   }
 
-  insert(value, index) {
-    if (index > this.getSize() || index < 0) {
-      console.log("Invalid index: " + index);
-      return;
-    }
-    if (index === 0) {
-      this.prepend(value);
-    } else {
-      const node = new Node(value);
-      let prev = this.head;
-      for (let i = 0; i < index - 1; i++) {
-        prev = prev.next;
-      }
-      node.next = prev.next;
-      prev.next = node;
-      this.size++;
-    }
-  }
+  // insert(value, index) {
+  //   if (index > this.getSize() || index < 0) {
+  //     console.log("Invalid index: " + index);
+  //     return;
+  //   }
+  //   if (index === 0) {
+  //     this.prepend(value);
+  //   } else {
+  //     const node = new Node(value);
+  //     let prev = this.head;
+  //     for (let i = 0; i < index - 1; i++) {
+  //       prev = prev.next;
+  //     }
+  //     node.next = prev.next;
+  //     prev.next = node;
+  //     this.size++;
+  //   }
+  // }
 
-  remove(index) {
-    if (index < 0 || index >= this.size) {
+  removeFromFront() {
+    if (this.isEmpty()) {
       return null;
     }
-    let removedNode = this.head;
-    if (index === 0) {
-      this.head = this.head.next;
-    } else {
-      let prev = this.head;
-      while (index - 1) {
-        prev = prev.next;
-        index--;
-      }
-      removedNode = prev.next;
-      prev.next = removedNode.next;
+    const value = this.head.value;
+    this.head = this.head.next;
+    if (this.size === 1) {
+      this.tail = null;
+      this.head = null;
     }
     this.size--;
-    return removedNode.value;
+    return value;
   }
 
-  removeValue(value) {
-    if (this.size === 0) {
+  removeFromEnd() {
+    if (this.isEmpty()) {
       return null;
     }
-    if (this.head.value === value) {
-      this.head = this.head.next;
-      this.size--;
-      return value;
+    const value = this.head.value;
+    if (this.size === 1) {
+      this.tail = null;
+      this.head = null;
+    } else {
+      let prev = this.head;
+      while (prev.next !== this.tail) {
+        prev = prev.next;
+      }
+      prev.next = null;
+      this.tail = prev;
     }
-    let prev = this.head;
-    while (prev.next.value !== value && prev.next !== null) {
-      prev = prev.next;
-    }
-    if (prev.next) {
-      let removedNode = prev.next;
-      prev.next = removedNode.next;
-      this.size--;
-      return value;
-    }
-    return null;
+    this.size--;
+    return value;
   }
+
+  // remove(index) {
+  //   if (index < 0 || index >= this.size) {
+  //     return null;
+  //   }
+  //   let removedNode = this.head;
+  //   if (index === 0) {
+  //     this.head = this.head.next;
+  //   } else {
+  //     let prev = this.head;
+  //     while (index - 1) {
+  //       prev = prev.next;
+  //       index--;
+  //     }
+  //     removedNode = prev.next;
+  //     prev.next = removedNode.next;
+  //   }
+  //   this.size--;
+  //   return removedNode.value;
+  // }
+
+  // removeValue(value) {
+  //   if (this.size === 0) {
+  //     return null;
+  //   }
+  //   if (this.head.value === value) {
+  //     this.head = this.head.next;
+  //     this.size--;
+  //     return value;
+  //   }
+  //   let prev = this.head;
+  //   while (prev.next.value !== value && prev.next !== null) {
+  //     prev = prev.next;
+  //   }
+  //   if (prev.next) {
+  //     let removedNode = prev.next;
+  //     prev.next = removedNode.next;
+  //     this.size--;
+  //     return value;
+  //   }
+  //   return null;
+  // }
+
+  search(value) {
+    if (this.size === 0) {
+      return -1;
+    }
+    let t = this.head;
+    let ind = 0;
+    while (t) {
+      if (t.value === value) {
+        return ind;
+      }
+      t = t.next;
+      ind++;
+    }
+    return -1;
+  }
+
+  // reverse() {
+  //   if (this.size === 0) return;
+  //   let prev = null;
+  //   let curr = this.head;
+  //   while (curr) {
+  //     let next = curr.next;
+  //     curr.next = prev;
+  //     prev = curr;
+  //     curr = next;
+  //   }
+  //   this.head = prev;
+  // }
 
   print() {
     if (this.isEmpty()) {
@@ -134,10 +199,9 @@ list.prepend(20);
 list.append(40);
 list.append(0);
 list.prepend(30);
-list.insert(50, 0);
-list.insert(15, 3);
-console.log(list.remove(3));
-console.log(list.remove(6));
-console.log(list.removeValue(50));
 list.print();
 console.log("Size: ", list.getSize());
+console.log(list.search(0));
+list.removeFromEnd();
+list.removeFromFront();
+list.print();
