@@ -191,17 +191,19 @@ class LinkedList {
   }
 }
 
-const list = new LinkedList();
-console.log("Empty: ", list.isEmpty());
-console.log("Size: ", list.getSize());
-list.prepend(10);
-list.prepend(20);
-list.append(40);
-list.append(0);
-list.prepend(30);
-list.print();
-console.log("Size: ", list.getSize());
-console.log(list.search(0));
-list.removeFromEnd();
-list.removeFromFront();
-list.print();
+module.exports = LinkedList
+
+// const list = new LinkedList();
+// console.log("Empty: ", list.isEmpty());
+// console.log("Size: ", list.getSize());
+// list.prepend(10);
+// list.prepend(20);
+// list.append(40);
+// list.append(0);
+// list.prepend(30);
+// list.print();
+// console.log("Size: ", list.getSize());
+// console.log(list.search(0));
+// list.removeFromEnd();
+// list.removeFromFront();
+// list.print();
